@@ -1,0 +1,13 @@
+{
+  "name": "soyu-zcrm",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "concurrently \"npm -w apps/server run dev\" \"npm -w apps/web run dev\" \"npm -w apps/bot run dev\"",
+    "build": "npm -w apps/server run build && npm -w apps/web run build && npm -w apps/bot run build",
+    "lint": "npm -w apps/server run lint && npm -w apps/web run lint && npm -w apps/bot run lint"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
