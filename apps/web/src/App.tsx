@@ -5,9 +5,11 @@ import {
   CheckCircle2,
   ClipboardList,
   LogOut,
+  Moon,
   Plus,
   RefreshCcw,
   ShieldCheck,
+  Sun,
   UserCircle2
 } from "lucide-react";
 import { apiRequest } from "./api";
@@ -18,8 +20,20 @@ const emptyTaskForm = { title: "", description: "", dueDate: "", assignedToId: "
 const emptyFirmForm = { name: "", description: "", phone: "", email: "" };
 
 export default function App() {
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    return (localStorage.getItem("theme") as "light" | "dark") || "light";
+  });
   const [token, setToken] = useState<string | null>(() => localStorage.getItem("token"));
   const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((t) => (t === "light" ? "dark" : "light"));
+  }
   const [tasks, setTasks] = useState<Task[]>([]);
   const [firms, setFirms] = useState<Firm[]>([]);
   const [accountants, setAccountants] = useState<User[]>([]);
@@ -253,6 +267,9 @@ export default function App() {
               <div className="subtitle">Минималистичная CRM для охранного агентства</div>
             </div>
           </div>
+          <button className="theme-toggle" onClick={toggleTheme} title={theme === "light" ? "Тёмная тема" : "Светлая тема"}>
+            {theme === "light" ? <Moon /> : <Sun />}
+          </button>
         </header>
 
         <section className="panel">
@@ -305,6 +322,9 @@ export default function App() {
             <div className="user-name">{user?.name}</div>
             <div className="user-role">{isManager ? "Руководитель" : "Бухгалтер"}</div>
           </div>
+          <button className="theme-toggle" onClick={toggleTheme} title={theme === "light" ? "Тёмная тема" : "Светлая тема"}>
+            {theme === "light" ? <Moon /> : <Sun />}
+          </button>
           <button className="icon" onClick={logout} title="Выход">
             <LogOut />
           </button>
